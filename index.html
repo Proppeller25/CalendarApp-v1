@@ -11,23 +11,35 @@
     <header>
       <h1>MY CALENDAR</h1>
     </header>
-    <div class="yearDiv">
-      April, 2026
-    </div>
-    <table class="datesTable">
-      <th>Sunday</th>
-      <th>Monday</th>
-      <th>Tuesday</th>
-      <th>Wednesday</th>
-      <th>Thursday</th>
-      <th>Friday</th>
-      <th>Saturday</th>
+    <section class="calendarLayout">
+      <div class="calendarPanel">
+        <div class="yearDiv">
+          April, 2026
+        </div>
+        <div class="tableWrap">
+          <table class="datesTable">
+            <thead>
+              <tr>
+                <th><span class="day-full">Sunday</span><span class="day-short">Sun</span></th>
+                <th><span class="day-full">Monday</span><span class="day-short">Mon</span></th>
+                <th><span class="day-full">Tuesday</span><span class="day-short">Tue</span></th>
+                <th><span class="day-full">Wednesday</span><span class="day-short">Wed</span></th>
+                <th><span class="day-full">Thursday</span><span class="day-short">Thu</span></th>
+                <th><span class="day-full">Friday</span><span class="day-short">Fri</span></th>
+                <th><span class="day-full">Saturday</span><span class="day-short">Sat</span></th>
+              </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-      <tbody>
-          
-      </tbody>
-
-    </table>
+      <aside class="dayViewSlot" aria-hidden="true">
+        <!-- Reserved UI space for a future selected-day event/details panel -->
+      </aside>
+    </section>
   </main>
   <script src="index.js"></script>
 </body>
