@@ -1,0 +1,66 @@
+main {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 10%;
+}
+
+
+.datesTable{
+  border: 1px solid whitesmoke;
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}
+
+th {
+  border: none;
+  padding: 20px;
+  border-collapse: collapse;
+  margin: 0;
+  text-align: center;
+}
+
+tr {
+  border: none;
+  padding: 20px;
+  border-collapse: collapse;
+  margin: 0;
+  text-align: center;
+}
+
+td {
+  padding: 30px 20px;
+  border-radius: 50%;
+  transition: all .2s ease-in-out;
+}
+
+tr{
+  padding: 10px;
+}
+
+.yearDiv {
+  padding: 20px;
+}
+
+.today{
+  background-color: #C7C7C6;
+  transition: all .2s ease-in-out;
+}
+
+.today:hover {
+  background-color: #999996;
+  transition: all .2s ease-in-out;
+}
+
+.otherDays:hover {
+  background-color: #C7C7C6;
+  transition: all .2s ease-in-out;
+}
