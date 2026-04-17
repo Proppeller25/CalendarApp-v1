@@ -4,8 +4,10 @@ const yearDiv = document.querySelector('.yearDiv')
 const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 
 const year = 2026
-const month = 4
+const month = 3
 const today = new Date().getDate()
+const currentMonth = new Date().getMonth()
+console.log(months[month], months[currentMonth])
 
 let firstDay = (new Date(year, month).getDay())
 
@@ -23,20 +25,24 @@ const refreshCalendar = () => {
 
     for (let cols = 0; cols < 7; cols++) {
       const cell = document.createElement('td')
+      const div = document.createElement('div')
+      div.classList.add('cell')
+      cell.appendChild(div)
+
       cell.style.cursor = 'pointer'
       if(rows === 0 && cols < firstDay) {
-        cell.innerText = ''
+        div.innerText = ''
       }
       else if( day <= getDaysInMonth(year, month)) {
-        cell.innerText = day
+        div.innerText = day
         day++
       }
       else if(day > getDaysInMonth(year, month)) break
 
-      else cell.innerText = ''
+      else div.innerText = ''
 
-      if (day === today + 1) cell.classList.add('today')
-        else cell.classList.add('otherDays')
+      if (day === today + 1 && months[month] === months[currentMonth]) div.classList.add('today')
+        else div.classList.add('otherDays')
 
       row.appendChild(cell)
     }

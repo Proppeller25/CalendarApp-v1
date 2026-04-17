@@ -26,11 +26,12 @@ th {
   border-collapse: collapse;
   margin: 0;
   text-align: center;
+  border: 1px solid whitesmoke;
 }
 
 tr {
   border: none;
-  padding: 20px;
+  /* padding: 20px; */
   border-collapse: collapse;
   margin: 0;
   text-align: center;
@@ -40,6 +41,7 @@ td {
   padding: 30px 20px;
   border-radius: 50%;
   transition: all .2s ease-in-out;
+  text-align: center;
 }
 
 tr{
@@ -63,4 +65,12 @@ tr{
 .otherDays:hover {
   background-color: #C7C7C6;
   transition: all .2s ease-in-out;
+}
+.cell {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
