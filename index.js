@@ -1,19 +1,27 @@
 const tableBody = document.querySelector('tbody')
 const yearDiv = document.querySelector('.yearDiv')
 
+const previousMonthButton = document.querySelector('.previousMonth')
+const nextMonthButton = document.querySelector('.nextMonth')
+
+const previousYearButton = document.querySelector('.previousYear')
+const nextYearButton = document.querySelector('.nextYear')
+const jumpToInput = document.querySelector('.jumpToInput')
+
 const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 
-const year = 2026
-const month = 3
+let year = new Date().getFullYear()
+let month = 3
 const today = new Date().getDate()
 const currentMonth = new Date().getMonth()
-console.log(months[month], months[currentMonth])
 
 let firstDay = (new Date(year, month).getDay())
 
 const getDaysInMonth = (year, month) => {
   return new Date(year, month + 1, 0).getDate()
 }
+
+
 
 const refreshCalendar = () => {
   let day = 1
@@ -41,7 +49,7 @@ const refreshCalendar = () => {
 
       else div.innerText = ''
 
-      if (day === today + 1 && months[month] === months[currentMonth]) div.classList.add('today')
+      if ((day === today + 1 && months[month] === months[currentMonth]) && year === new Date().getFullYear()) div.classList.add('today')
         else div.classList.add('otherDays')
 
       row.appendChild(cell)
@@ -50,10 +58,46 @@ const refreshCalendar = () => {
     tableBody.appendChild(row)
 
   }
+
+  ///disable buttons when month is january or december
+
+  nextMonthButton.disabled = month >= months.length - 1
+  if(nextMonthButton.disabled) nextMonthButton.style.cursor = 'not-allowed'
+  else nextMonthButton.style.cursor = 'pointer'
+  
+  previousMonthButton.disabled = month === 0
+  if(previousMonthButton.disabled) previousMonthButton.style.cursor = 'not-allowed'
+  else previousMonthButton.style.cursor = 'pointer'
+
 }
 
 refreshCalendar()
 
+jumpToInput.addEventListener('change', (e) => {
+  const [inputYear, inputMonth] = e.target.value.split('-')
+  year = Number(inputYear)
+  month = Number(inputMonth) - 1
+  firstDay = (new Date(year, month).getDay())
+  tableBody.innerHTML = ''
+  refreshCalendar()
+})
+
+
+previousMonthButton.addEventListener('click', (e) => {
+  if(month > 0) {
+    month--
+    tableBody.innerHTML = ''
+    refreshCalendar()
+  }
+})
+
+nextMonthButton.addEventListener('click', (e) => {
+  if(month < months.length - 1) {
+    month++
+    tableBody.innerHTML = ''
+    refreshCalendar()
+  }
+})
 
 
 console.log(firstDay, today)
