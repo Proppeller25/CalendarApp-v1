@@ -14,7 +14,15 @@
     <section class="calendarLayout">
       <div class="calendarPanel">
         <div class="yearDiv">
-          April, 2026
+          <button class="navButton previousYear" aria-label="Previous Year">Previous Year</button>
+          <button class="navButton previousMonth" aria-label="Previous Month">Previous Month</button>
+          <div class="monthYearDisplay">
+            <span class="yearText">April, 2026</span>
+            <button class="resetButton" aria-label="Reset Calendar">Today</button>
+          </div>
+          
+          <button class="navButton nextMonth" aria-label="Next Month">Next Month</button>
+          <button class="navButton nextYear" aria-label="Next Year">Next Year</button>
         </div>
         <div class="tableWrap">
           <table class="datesTable">
@@ -36,22 +44,12 @@
         </div>
       </div>
 
-      <div>
-        <button class="previousMonth">Previous Month</button>
-
-        <button class="nextMonth">Next Month</button>
-      </div>
-
-      <div>
-        <button class="previousYear">Previous Year</button>
-
-        <button class="nextYear">Next Year</button>
-      </div>
-
-      <div>
-        <label for="jumpTo">Jump to:</label>
-        <input type="month" class="jumpToInput" name="jumpTo">
-      </div>
+      <section class="controlsPanel" aria-label="Calendar controls">
+        <div class="controlGroup jumpGroup">
+          <label class="controlLabel" for="jumpTo">Jump to</label>
+          <input type="month" class="jumpToInput" name="jumpTo" id="jumpTo">
+        </div>
+      </section>
       <aside class="dayViewSlot" aria-hidden="true">
 
       </aside>

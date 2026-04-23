@@ -1,5 +1,5 @@
 const tableBody = document.querySelector('tbody')
-const yearDiv = document.querySelector('.yearDiv')
+const yearText = document.querySelector('.yearText')
 
 const previousMonthButton = document.querySelector('.previousMonth')
 const nextMonthButton = document.querySelector('.nextMonth')
@@ -8,12 +8,15 @@ const previousYearButton = document.querySelector('.previousYear')
 const nextYearButton = document.querySelector('.nextYear')
 const jumpToInput = document.querySelector('.jumpToInput')
 
+const resetButton = document.querySelector('.resetButton')
+
 const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 
 let year = new Date().getFullYear()
 let month = 3
 const today = new Date().getDate()
 const currentMonth = new Date().getMonth()
+const currentYear = new Date().getFullYear()
 
 let firstDay = (new Date(year, month).getDay())
 
@@ -25,7 +28,7 @@ const getDaysInMonth = (year, month) => {
 
 const refreshCalendar = () => {
   let day = 1
-  yearDiv.innerText = `${months[month].toLocaleUpperCase()}, ${year}`
+  yearText.innerText = `${months[month].toLocaleUpperCase()}, ${year}`
 
 
   for (let rows = 0; rows < 6; rows++) {
@@ -69,6 +72,22 @@ const refreshCalendar = () => {
   if(previousMonthButton.disabled) previousMonthButton.style.cursor = 'not-allowed'
   else previousMonthButton.style.cursor = 'pointer'
 
+  // nextMonthButton.textContent = ''
+  // previousMonthButton.textContent = ''
+  // nextYearButton.textContent = ''
+  // previousYearButton.textContent = ''
+  nextMonthButton.textContent = months[month < months.length - 1 ? month + 1 : 11]
+  previousMonthButton.textContent = months[month > 0 ? month - 1 : 0]
+
+  previousYearButton.textContent = year - 1
+  nextYearButton.textContent = year + 1
+
+  if (year !== currentYear || month !== currentMonth) {
+    resetButton.style.display = 'block'
+  } else {
+    resetButton.style.display = 'none'
+  }
+
 }
 
 refreshCalendar()
@@ -99,6 +118,24 @@ nextMonthButton.addEventListener('click', (e) => {
   }
 })
 
+previousYearButton.addEventListener('click', (e) => {
+  year--
+  firstDay = (new Date(year, month).getDay())
+  tableBody.innerHTML = ''
+  refreshCalendar()
+})
 
-console.log(firstDay, today)
+nextYearButton.addEventListener('click', (e) => {
+  year++
+  firstDay = (new Date(year, month).getDay())
+  tableBody.innerHTML = ''
+  refreshCalendar()
+})
 
+resetButton.addEventListener('click', (e) => {
+  year = currentYear
+  month = currentMonth
+  firstDay = (new Date(year, month).getDay())
+  tableBody.innerHTML = ''
+  refreshCalendar()
+})

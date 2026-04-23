@@ -6,6 +6,9 @@
   --muted-text: #6a655d;
   --highlight: #c7c7c6;
   --highlight-hover: #999996;
+  --control-surface: #f6f1e8;
+  --control-border: #cec4b3;
+  --button-text: #383229;
   --shadow: 0 24px 60px rgba(33, 31, 27, 0.08);
 }
 
@@ -48,6 +51,7 @@ h1 {
 }
 
 .calendarPanel,
+.controlsPanel,
 .dayViewSlot {
   background-color: var(--panel-bg);
   border: 1px solid var(--border-color);
@@ -59,8 +63,79 @@ h1 {
   padding: clamp(1rem, 2vw, 1.5rem);
 }
 
+.controlsPanel {
+  padding: clamp(0.9rem, 2vw, 1.1rem);
+  display: grid;
+  gap: 1rem;
+}
+
+.controlGroup {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.controlLabel {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.navButton,
+.jumpToInput {
+  min-height: 2.75rem;
+  border-radius: 1rem;
+  border: 1px solid var(--control-border);
+  background: var(--control-surface);
+  color: var(--button-text);
+  font: inherit;
+}
+
+.navButton {
+  width: 100%;
+  padding: 0.7rem 0.6rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.navButton:hover:not(:disabled),
+.navButton:focus-visible,
+.jumpToInput:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(33, 31, 27, 0.08);
+  background-color: #fbf8f1;
+}
+
+.navButton:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.jumpGroup {
+  gap: 0.5rem;
+}
+
+.jumpToInput {
+  width: 100%;
+  padding: 0 0.95rem;
+}
+
 .yearDiv {
-  padding: 0.5rem 0 1rem;
+  padding: 0.1rem 0 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(180px, auto) minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.yearText {
+  text-align: center;
   font-size: clamp(1rem, 2.5vw, 1.35rem);
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -112,7 +187,23 @@ td {
   background-color: var(--highlight);
   transition: all 0.2s ease-in-out;
 }
-
+.monthYearDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.monthYearDisplay .resetButton {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  /* background-color: transparent; */
+  border: none;
+  border-radius: 1rem;
+  color: var(--button-text);
+  cursor: pointer;
+}
 .cell {
   width: min(100%, 4rem);
   aspect-ratio: 1 / 1;
@@ -140,9 +231,24 @@ td {
 @media (min-width: 960px) {
   .calendarLayout {
     grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    grid-template-areas:
+      "calendar controls"
+      "calendar dayview";
+  }
+
+  .calendarPanel {
+    grid-area: calendar;
+  }
+
+  .controlsPanel {
+    grid-area: controls;
+    align-self: start;
+    position: sticky;
+    top: 1rem;
   }
 
   .dayViewSlot {
+    grid-area: dayview;
     display: block;
     min-height: 100%;
   }
@@ -157,6 +263,38 @@ td {
   .calendarPanel {
     padding: 0.85rem;
     border-radius: 1.1rem;
+  }
+
+  .controlsPanel {
+    padding: 0.85rem;
+    border-radius: 1.1rem;
+  }
+
+  .yearDiv {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      "prevYear prevMonth nextMonth nextYear"
+      "title title title title";
+  }
+
+  .previousYear {
+    grid-area: prevYear;
+  }
+
+  .previousMonth {
+    grid-area: prevMonth;
+  }
+
+  .nextMonth {
+    grid-area: nextMonth;
+  }
+
+  .nextYear {
+    grid-area: nextYear;
+  }
+
+  .yearText {
+    grid-area: title;
   }
 
   .day-full {
@@ -187,8 +325,28 @@ td {
     padding: 0.65rem 0.4rem 0.85rem;
   }
 
+  .controlsPanel {
+    padding: 0.8rem 0.7rem;
+    gap: 0.85rem;
+  }
+
   .yearDiv {
     padding-bottom: 0.8rem;
+    gap: 0.45rem;
+  }
+
+  .navButton,
+  .jumpToInput {
+    min-height: 2.55rem;
+    border-radius: 0.85rem;
+  }
+
+  .navButton {
+    font-size: 0.82rem;
+    padding-inline: 0.35rem;
+  }
+
+  .yearText {
     font-size: 0.95rem;
   }
 
@@ -219,6 +377,18 @@ td {
 
   .calendarPanel {
     padding-inline: 0.25rem;
+  }
+
+  .controlsPanel {
+    padding-inline: 0.5rem;
+  }
+
+  .yearDiv {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "prevYear nextYear"
+      "title title"
+      "prevMonth nextMonth";
   }
 
   th {
