@@ -30,6 +30,7 @@ main {
   width: min(1200px, calc(100% - 2rem));
   margin: 0 auto;
   padding: clamp(1rem, 2vw, 2rem) 0 clamp(1.5rem, 3vw, 3rem);
+  position: relative;
 }
 
 header {
@@ -51,8 +52,7 @@ h1 {
 }
 
 .calendarPanel,
-.controlsPanel,
-.dayViewSlot {
+.dayView .davViewDiv {
   background-color: var(--panel-bg);
   border: 1px solid var(--border-color);
   border-radius: 1.5rem;
@@ -61,12 +61,6 @@ h1 {
 
 .calendarPanel {
   padding: clamp(1rem, 2vw, 1.5rem);
-}
-
-.controlsPanel {
-  padding: clamp(0.9rem, 2vw, 1.1rem);
-  display: grid;
-  gap: 1rem;
 }
 
 .controlGroup {
@@ -123,22 +117,48 @@ h1 {
 
 .jumpToInput {
   width: 100%;
+  min-width: 0;
   padding: 0 0.95rem;
 }
 
 .yearDiv {
   padding: 0.1rem 0 1rem;
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(180px, auto) minmax(0, 1fr) minmax(0, 0.8fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.6rem;
-  align-items: center;
+  align-items: end;
 }
 
+.displayGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.displayGroup .navButton {
+  width: 2.2rem;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  padding: 0;
+  border-radius: 999px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.monthText,
 .yearText {
   text-align: center;
   font-size: clamp(1rem, 2.5vw, 1.35rem);
   font-weight: 700;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex: 1;
+  min-width: 0;
+}
+
+.monthText {
+  min-width: 4.5rem;
 }
 
 .tableWrap {
@@ -189,9 +209,11 @@ td {
 }
 .monthYearDisplay {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
+  align-items: end;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 .monthYearDisplay .resetButton {
   padding: 0.35rem 0.6rem;
@@ -203,8 +225,16 @@ td {
   border-radius: 1rem;
   color: var(--button-text);
   cursor: pointer;
+  background-color: transparent;
 }
-.cell {
+
+.jumpGroup {
+  flex: 0 1 210px;
+  min-width: 150px;
+  max-width: 210px;
+}
+
+.cell, .addEventButton {
   width: min(100%, 4rem);
   aspect-ratio: 1 / 1;
   margin: 0 auto;
@@ -215,9 +245,85 @@ td {
   font-size: clamp(0.8rem, 1.9vw, 1.05rem);
 }
 
-.dayViewSlot {
-  min-height: 100%;
+.dayView {
+  position: fixed;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  color: white;
+  min-height: 100vh;
+  inset: 0;
   display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.dayView .davViewDiv {
+  max-height: min(80vh, 720px);
+  width: min(520px, calc(100% - 2rem));
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 1rem;
+  overflow-y: auto;
+  gap: 0.9rem;
+}
+
+.dayViewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dayViewTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.closeDayView {
+  border: none;
+  background-color: transparent;
+  color: var(--button-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.dayViewBody {
+  display: grid;
+  gap: 0.45rem;
+  padding-bottom: 4.5rem;
+}
+
+.timeRow {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.9rem;
+  background-color: var(--control-surface);
+  color: var(--button-text);
+}
+
+.addEventButton {
+  position: sticky;
+  text-align: center;
+  right: 1rem;
+  bottom: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  /* border-radius: 50%; */
+  background-color: var(--button-text);
+  color: var(--panel-bg);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 14px 24px rgba(33, 31, 27, 0.16);
 }
 
 .day-full {
@@ -228,29 +334,14 @@ td {
   display: none;
 }
 
+
 @media (min-width: 960px) {
   .calendarLayout {
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-    grid-template-areas:
-      "calendar controls"
-      "calendar dayview";
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .calendarPanel {
-    grid-area: calendar;
-  }
-
-  .controlsPanel {
-    grid-area: controls;
-    align-self: start;
-    position: sticky;
-    top: 1rem;
-  }
-
-  .dayViewSlot {
-    grid-area: dayview;
-    display: block;
-    min-height: 100%;
+    grid-area: auto;
   }
 }
 
@@ -265,36 +356,13 @@ td {
     border-radius: 1.1rem;
   }
 
-  .controlsPanel {
-    padding: 0.85rem;
-    border-radius: 1.1rem;
-  }
-
   .yearDiv {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-areas:
-      "prevYear prevMonth nextMonth nextYear"
-      "title title title title";
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 
-  .previousYear {
-    grid-area: prevYear;
-  }
-
-  .previousMonth {
-    grid-area: prevMonth;
-  }
-
-  .nextMonth {
-    grid-area: nextMonth;
-  }
-
-  .nextYear {
-    grid-area: nextYear;
-  }
-
-  .yearText {
-    grid-area: title;
+  .monthYearDisplay {
+    justify-content: stretch;
+    flex-wrap: wrap;
   }
 
   .day-full {
@@ -325,14 +393,10 @@ td {
     padding: 0.65rem 0.4rem 0.85rem;
   }
 
-  .controlsPanel {
-    padding: 0.8rem 0.7rem;
-    gap: 0.85rem;
-  }
-
   .yearDiv {
     padding-bottom: 0.8rem;
     gap: 0.45rem;
+    grid-template-columns: 1fr;
   }
 
   .navButton,
@@ -341,13 +405,26 @@ td {
     border-radius: 0.85rem;
   }
 
-  .navButton {
-    font-size: 0.82rem;
-    padding-inline: 0.35rem;
+  .displayGroup .navButton {
+    min-height: 2.1rem;
+    min-width: 2.1rem;
+    font-size: 0.95rem;
   }
 
+  .monthText,
   .yearText {
     font-size: 0.95rem;
+  }
+
+  .monthYearDisplay {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .jumpGroup {
+    min-width: 100%;
+    max-width: none;
+    flex-basis: auto;
   }
 
   .datesTable {
@@ -368,6 +445,16 @@ td {
     width: min(100%, 2.35rem);
     font-size: 0.78rem;
   }
+
+  .dayView .davViewDiv {
+    width: calc(100% - 1rem);
+    padding: 0.8rem;
+  }
+
+  .addEventButton {
+    right: 0.8rem;
+    bottom: 0.8rem;
+  }
 }
 
 @media (max-width: 360px) {
@@ -377,18 +464,6 @@ td {
 
   .calendarPanel {
     padding-inline: 0.25rem;
-  }
-
-  .controlsPanel {
-    padding-inline: 0.5rem;
-  }
-
-  .yearDiv {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "prevYear nextYear"
-      "title title"
-      "prevMonth nextMonth";
   }
 
   th {

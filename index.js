@@ -1,5 +1,6 @@
 const tableBody = document.querySelector('tbody')
 const yearText = document.querySelector('.yearText')
+const monthText = document.querySelector('.monthText')
 
 const previousMonthButton = document.querySelector('.previousMonth')
 const nextMonthButton = document.querySelector('.nextMonth')
@@ -7,6 +8,11 @@ const nextMonthButton = document.querySelector('.nextMonth')
 const previousYearButton = document.querySelector('.previousYear')
 const nextYearButton = document.querySelector('.nextYear')
 const jumpToInput = document.querySelector('.jumpToInput')
+const dayViewDiv = document.querySelector('.davViewDiv')
+const dayView = document.querySelector('.dayView')
+const dayViewBody = document.querySelector('.dayViewBody')
+const dayViewTitle = document.querySelector('.dayViewTitle')
+const closeDayViewButton = document.querySelector('.closeDayView')
 
 const resetButton = document.querySelector('.resetButton')
 
@@ -17,6 +23,7 @@ let month = 3
 const today = new Date().getDate()
 const currentMonth = new Date().getMonth()
 const currentYear = new Date().getFullYear()
+let currentHour = new Date().getHours()
 
 let firstDay = (new Date(year, month).getDay())
 
@@ -28,8 +35,8 @@ const getDaysInMonth = (year, month) => {
 
 const refreshCalendar = () => {
   let day = 1
-  yearText.innerText = `${months[month].toLocaleUpperCase()}, ${year}`
-
+  monthText.innerText = months[month].toLocaleUpperCase()
+  yearText.innerText = year
 
   for (let rows = 0; rows < 6; rows++) {
     const row = document.createElement('tr')
@@ -37,6 +44,7 @@ const refreshCalendar = () => {
     for (let cols = 0; cols < 7; cols++) {
       const cell = document.createElement('td')
       const div = document.createElement('div')
+      div.removeEventListener('click', () => console.log("removed"))
       div.classList.add('cell')
       cell.appendChild(div)
 
@@ -52,6 +60,22 @@ const refreshCalendar = () => {
 
       else div.innerText = ''
 
+      ///display date in sideviewpanel when clicked 
+      div.addEventListener('click', (e) => {
+        if (!e.target.textContent) return
+        dayView.style.display = 'flex'
+        dayViewTitle.innerText = `${months[month].toLocaleUpperCase()} ${e.target.textContent}, ${year}`
+        dayViewBody.innerHTML = ''
+        for (let hour = 1; hour <= 24; hour++) {
+          const suffix =  hour >= 12 && hour !== 24 ? 'PM' : 'AM'
+          const Hour = hour > 12 ? hour - 12 : hour
+
+          dayViewBody.innerHTML += `<div class="timeRow">${Hour} ${suffix}</div>`
+        }
+
+      })
+
+      ///highlight logic for each day
       if ((day === today + 1 && months[month] === months[currentMonth]) && year === new Date().getFullYear()) div.classList.add('today')
         else div.classList.add('otherDays')
 
@@ -71,16 +95,6 @@ const refreshCalendar = () => {
   previousMonthButton.disabled = month === 0
   if(previousMonthButton.disabled) previousMonthButton.style.cursor = 'not-allowed'
   else previousMonthButton.style.cursor = 'pointer'
-
-  // nextMonthButton.textContent = ''
-  // previousMonthButton.textContent = ''
-  // nextYearButton.textContent = ''
-  // previousYearButton.textContent = ''
-  nextMonthButton.textContent = months[month < months.length - 1 ? month + 1 : 11]
-  previousMonthButton.textContent = months[month > 0 ? month - 1 : 0]
-
-  previousYearButton.textContent = year - 1
-  nextYearButton.textContent = year + 1
 
   if (year !== currentYear || month !== currentMonth) {
     resetButton.style.display = 'block'
@@ -139,3 +153,13 @@ resetButton.addEventListener('click', (e) => {
   tableBody.innerHTML = ''
   refreshCalendar()
 })
+
+closeDayViewButton.addEventListener('click', () => {
+  dayView.style.display = 'none'
+})
+
+dayView.addEventListener('click', (e) => {
+  if (e.target === dayView) dayView.style.display = 'none'
+})
+
+

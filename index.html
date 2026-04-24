@@ -14,15 +14,23 @@
     <section class="calendarLayout">
       <div class="calendarPanel">
         <div class="yearDiv">
-          <button class="navButton previousYear" aria-label="Previous Year">Previous Year</button>
-          <button class="navButton previousMonth" aria-label="Previous Month">Previous Month</button>
+          <div class="displayGroup">
+            <button class="navButton previousMonth" aria-label="Previous Month">&#8592;</button>
+            <span class="monthText">April</span>
+            <button class="navButton nextMonth" aria-label="Next Month">&#8594;</button>
+          </div>
+          <div class="displayGroup">
+            <button class="navButton previousYear" aria-label="Previous Year">&#8592;</button>
+            <span class="yearText">2026</span>
+            <button class="navButton nextYear" aria-label="Next Year">&#8594;</button>
+          </div>
           <div class="monthYearDisplay">
-            <span class="yearText">April, 2026</span>
+            <div class="controlGroup jumpGroup">
+              <label class="controlLabel" for="jumpTo">Jump to</label>
+              <input type="month" class="jumpToInput" name="jumpTo" id="jumpTo">
+            </div>
             <button class="resetButton" aria-label="Reset Calendar">Today</button>
           </div>
-          
-          <button class="navButton nextMonth" aria-label="Next Month">Next Month</button>
-          <button class="navButton nextYear" aria-label="Next Year">Next Year</button>
         </div>
         <div class="tableWrap">
           <table class="datesTable">
@@ -43,17 +51,17 @@
           </table>
         </div>
       </div>
-
-      <section class="controlsPanel" aria-label="Calendar controls">
-        <div class="controlGroup jumpGroup">
-          <label class="controlLabel" for="jumpTo">Jump to</label>
-          <input type="month" class="jumpToInput" name="jumpTo" id="jumpTo">
-        </div>
-      </section>
-      <aside class="dayViewSlot" aria-hidden="true">
-
-      </aside>
     </section>
+    <aside class="dayView">
+      <div class="davViewDiv">
+        <div class="dayViewHeader">
+          <div class="dayViewTitle">DAY</div>
+          <button class="closeDayView" aria-label="Close Day View">&#10005;</button>
+        </div>
+        <div class="dayViewBody"></div>
+        <button class="addEventButton" aria-label="Create Event">+</button>
+      </div>
+    </aside>
   </main>
   <script src="index.js"></script>
 </body>
